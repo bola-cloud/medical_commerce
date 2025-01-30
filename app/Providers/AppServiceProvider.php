@@ -21,10 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Fetch categories once and share globally
-        $categories = Category::get();
-
-        // Share the data globally
-        View::share('categories', $categories);
+        // Check if the 'categories' table exists before querying
+        if (Schema::hasTable('categories')) {
+            $categories = Category::get();
+            View::share('categories', $categories);
+        }
     }
 }
