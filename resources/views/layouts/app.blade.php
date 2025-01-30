@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{asset('theme/assets/css/tiny-slider.css')}}" />
     <link rel="stylesheet" href="{{asset('theme/assets/css/glightbox.min.css')}}" />
     <link rel="stylesheet" href="{{asset('theme/assets/css/main.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     @if(app()->getLocale() === 'ar')
         <link rel="stylesheet" href="{{asset('theme/assets/css/rtl.css')}}" />
@@ -109,17 +110,43 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
                             <div class="user">
-                                <i class="lni lni-user"></i>
-                                {{ __('lang.header_user_greeting') }}
+                                <ul class="user-login">
+                                    <i class="lni lni-user"></i>
+                                    {{ __('lang.header_user_greeting') }}:
+                                    @auth
+                                        <div class="dropdown d-inline">
+                                            <a class="dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ Auth::user()->name }}
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                                @if (Auth::user()->category == 'admin')
+                                                    <li><a class="dropdown-item text-dark" href="{{ route('dashboard') }}">{{ __('lang.dashboard') }}</a></li>
+                                                @endif
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
+
+                                                <li>
+                                                    <a class="dropdown-item text-dark" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                        {{ __('lang.logout') }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    @endauth
+                                </ul>
                             </div>
-                            <ul class="user-login">
-                                <li>
-                                    <a href="{{ route('login') }}">{{ __('lang.header_sign_in') }}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('register') }}">{{ __('lang.header_register') }}</a>
-                                </li>
-                            </ul>
+
+                            @if (!Auth::user())
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="{{ route('login') }}">{{ __('lang.header_sign_in') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('register') }}">{{ __('lang.header_register') }}</a>
+                                    </li>
+                                </ul>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -375,6 +402,8 @@
     <script src="{{asset('theme/assets/js/tiny-slider.js')}}"></script>
     <script src="{{asset('theme/assets/js/glightbox.min.js')}}"></script>
     <script src="{{asset('theme/assets/js/main.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script type="text/javascript">
         //========= Hero Slider
         tns({

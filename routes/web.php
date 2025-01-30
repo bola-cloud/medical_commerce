@@ -19,6 +19,7 @@ Route::group([
         'auth:sanctum',
         config('jetstream.auth_session'),
         'verified',
+        'admin', // Apply the admin middleware
     ]
 ], function () {
     Route::get('/admin', [\App\Http\Controllers\Admin\Dashboard::class, 'index'])->name('dashboard');
@@ -27,6 +28,7 @@ Route::group([
     Route::resource('adsliders', \App\Http\Controllers\Admin\AdSliderController::class)->names('admin.adsliders');
     Route::post('/products/upload', [\App\Http\Controllers\Admin\ProductController::class, 'upload'])->name('admin.products.upload');
     Route::delete('/admin/products/temp-image', [\App\Http\Controllers\Admin\ProductController::class, 'deleteTempImage'])->name('admin.products.delete_temp_image');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');
 });
 
 Route::group([

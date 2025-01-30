@@ -8197,3 +8197,11 @@ blockquote span {
     padding: 10px 20px;
     border-radius: 50px;
 }
+a{
+    text-decoration: none !important;
+}
+.dropdown-menu.show
+{
+    display: flex !important;
+    flex-direction: column;
+}
